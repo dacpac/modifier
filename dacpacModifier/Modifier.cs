@@ -160,22 +160,6 @@ namespace dacpacModifier
 
 
         }
-        //  --------------------------- CopyStream ---------------------------
-        /// <summary>
-        ///   Copies data from a source stream to a target stream.</summary>
-        /// <param name="source">
-        ///   The source stream to copy from.</param>
-        /// <param name="target">
-        ///   The destination stream to copy to.</param>
-        private static void CopyStream(Stream source, Stream target)
-        {
-            const int bufSize = 0x1000;
-            byte[] buf = new byte[bufSize];
-            int bytesRead = 0;
-            while ((bytesRead = source.Read(buf, 0, bufSize)) > 0)
-                target.Write(buf, 0, bytesRead);
-        }// end:CopyStream()
-
     }
 }
 
