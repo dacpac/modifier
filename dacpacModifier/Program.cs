@@ -13,43 +13,38 @@ namespace dacpacModifier
 {
     class Program
     {
+        public static string daclocation = @"C:\code\xyz_dms_common.dacpac";
+
         static void Main(string[] args)
         {
-            var ConsoleArgs = new ConsoleArgs();
-            if (Parser.Default.ParseArguments(args, ConsoleArgs))
+            try
             {
-                // consume Options instance properties
-                if (ConsoleArgs.Verbose)
+                var options = new Options();
+                               
+                if (Parser.Default.ParseArguments(args, options))
                 {
-                    Console.WriteLine(ConsoleArgs.InputFile);
+                    Modifier.Modify(options);
                 }
-                else
-                    Console.WriteLine("working ...");
             }
-
-
-            //Package dacpac = Package.Open(daclocation, FileMode.Open, FileAccess.Read);
-            //try
-            //{
-            //    Uri originUri = PackUriHelper.CreatePartUri(new Uri("/origin.xml", UriKind.Relative));
-            //    Uri modelUri = PackUriHelper.CreatePartUri(new Uri("/model.xml", UriKind.Relative));
-
-            //    XDocument dacOriginXml = XDocument.Load(XmlReader.Create(dacpac.GetPart(originUri).GetStream()));
-            //    XDocument dacModelXml = XDocument.Load(XmlReader.Create(dacpac.GetPart(modelUri).GetStream()));
-
-            //}
-            //catch (Exception exception)
-            //{
-            //    throw;
-            //}
-
-            //if (!(dacpac == null))
-            //{
-            //   dacpac.Close();
-            //}
-
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            catch (ArgumentException ae)
+            {
+                ArgumentException _arguementException = ae;
+                Console.WriteLine(Constants.ErrorInvalidParameter, _arguementException.Message);
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                FileNotFoundException _fileNotFound = fnfe;
+                Console.WriteLine(Constants.ErrorFileNotFound, _fileNotFound.FileName);
+            }
+            catch (FileFormatException ffe)
+            {
+                FileFormatException _fileFormatException = ffe;
+                Console.WriteLine(Constants.ErrorNotAValidDacpac, _fileFormatException.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

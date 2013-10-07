@@ -5,10 +5,16 @@ using CommandLine.Text;
 
 namespace dacpacModifier
 {
-    class ConsoleArgs
+    class Options
     {
         [Option('i', "input", Required = true, HelpText = "Input dacpac to read.")]
         public string InputFile { get; set; }
+
+        [Option('e', "element", Required = true, HelpText = "The Element Type(s) to remove in the model file, use ; to split type(s)")]
+        public string ElementTypes { get; set; }
+
+        [Option('p', "property", HelpText = "Remove property type(s) by name, use ; to split type(s)")]
+        public string PropertyTypes { get; set; }
 
         [Option('v', "verbose", HelpText = "Print details during execution.")]
         public bool Verbose { get; set; }

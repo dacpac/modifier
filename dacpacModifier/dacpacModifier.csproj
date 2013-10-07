@@ -46,7 +46,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleArgs.cs" />
+    <Compile Include="Checks.cs" />
+    <Compile Include="Checksum.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Modifier.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
