@@ -47,7 +47,7 @@ namespace dacpacModifier
         }
 
         /// <summary>
-        /// Open's a dacpac and removes element types based on the console input -r
+        /// Open's a dacpac and removes element/property types based on the console input -e/-p
         /// </summary>
         /// <param name="InputFile">The Input dacpac to open and remove elements from</param>
         /// <param name="args">The arguments to consume</param>
