@@ -132,8 +132,8 @@ namespace dacpacModifier
                         if (_xmlWriter != null)
                         {
                             _xmlWriter.Close();
-                            Console.WriteLine("Press any key to continue...");
-                            Console.ReadKey();
+                            //Console.WriteLine("Press any key to continue...");
+                            //Console.ReadKey();
                         }
                     }
                     
