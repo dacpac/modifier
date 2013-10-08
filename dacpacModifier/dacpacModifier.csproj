@@ -49,6 +49,7 @@
     <Compile Include="Checks.cs" />
     <Compile Include="Checksum.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Remove.cs" />
     <Compile Include="Modifier.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
