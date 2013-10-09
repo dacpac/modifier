@@ -13,8 +13,6 @@ namespace dacpacModifier
 {
     class Program
     {
-        public static string daclocation = @"C:\code\xyz_dms_common.dacpac";
-
         static void Main(string[] args)
         {
             try
