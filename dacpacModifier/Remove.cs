@@ -69,6 +69,25 @@ namespace dacpacModifier
                 // Convert to string so xml can be formatted!
                 string stringDacModel = dacModelXml.ToString();
 
+                if (args.stringreplace != null)
+                {
+                    string[] arrStr = args.stringreplace.Split('~');
+
+                    if (args.Verbose)
+                    {
+                        Console.WriteLine("Performing string replacement: Replacing {0} with {1}", arrStr[0], arrStr[1]);
+                    }
+                    if (arrStr[1] == "null")
+                    {
+                        stringDacModel = stringDacModel.Replace(arrStr[0], String.Empty);
+
+                    }
+                    else
+                    {
+                        stringDacModel = stringDacModel.Replace(arrStr[0], arrStr[1]);
+                    }
+                }
+
                 XDocument newDacModelXml = XDocument.Parse(stringDacModel);
                 try
                 {
@@ -185,6 +204,25 @@ namespace dacpacModifier
 
                 // Convert to string so xml can be formatted!
                 string stringDacModel = dacModelXml.ToString();
+
+                if (args.stringreplace != null)
+                {
+                    string[] arrStr = args.stringreplace.Split('~');
+
+                    if (args.Verbose)
+                    {
+                        Console.WriteLine("Performing string replacement: Replacing {0} with {1}", arrStr[0], arrStr[1]);
+                    }
+                    if (arrStr[1] == "null")
+                    {
+                        stringDacModel = stringDacModel.Replace(arrStr[0], String.Empty);
+
+                    }
+                    else
+                    {
+                        stringDacModel = stringDacModel.Replace(arrStr[0], arrStr[1]);
+                    }
+                }
 
                 XDocument newDacModelXml = XDocument.Parse(stringDacModel);
                 // Add the custom parts
