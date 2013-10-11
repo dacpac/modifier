@@ -62,6 +62,20 @@ namespace dacpacModifier
                     }
                 }
 
+                // Remove Elements by type and name if supplied
+                if (args.ElementTypeName != null)
+                {
+                    string[] _elementTypeNames = args.ElementTypeName.Split(';');
+                    foreach (string etn in _elementTypeNames)
+                    {
+                        string[] _elementTypes = etn.Split('~');
+                        dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                               .Where(x => x.Attribute("Type").Value == _elementTypes[0])
+                               .Where(x => x.Attribute("Name").Value == _elementTypes[1])
+                               .Remove();
+                    }
+                }
+
                 // Stream required to reset the length as data still gets appended when saving
                 Stream _stream = dacModelPart.GetStream(FileMode.Open, FileAccess.Write);
                 _stream.SetLength(0);
@@ -69,9 +83,9 @@ namespace dacpacModifier
                 // Convert to string so xml can be formatted!
                 string stringDacModel = dacModelXml.ToString();
 
-                if (args.stringreplace != null)
+                if (args.StringReplace != null)
                 {
-                    string[] arrStr = args.stringreplace.Split('~');
+                    string[] arrStr = args.StringReplace.Split('~');
 
                     if (args.Verbose)
                     {
@@ -198,6 +212,20 @@ namespace dacpacModifier
                     }
                 }
 
+                // Remove Elements by type and name if supplied
+                if (args.ElementTypeName != null)
+                {
+                    string[] _elementTypeNames = args.ElementTypeName.Split(';');
+                    foreach (string etn in _elementTypeNames)
+                    {
+                        string[] _elementTypes = etn.Split('~');
+                        dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                               .Where(x => x.Attribute("Type").Value == _elementTypes[0])
+                               .Where(x => x.Attribute("Name").Value == _elementTypes[1])
+                               .Remove();
+                    }
+                }
+
                 // Stream required to reset the length as data still gets appended when saving
                 Stream _stream = dacModelPart.GetStream(FileMode.Open, FileAccess.Write);
                 _stream.SetLength(0);
@@ -205,9 +233,9 @@ namespace dacpacModifier
                 // Convert to string so xml can be formatted!
                 string stringDacModel = dacModelXml.ToString();
 
-                if (args.stringreplace != null)
+                if (args.StringReplace != null)
                 {
-                    string[] arrStr = args.stringreplace.Split('~');
+                    string[] arrStr = args.StringReplace.Split('~');
 
                     if (args.Verbose)
                     {

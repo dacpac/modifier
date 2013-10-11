@@ -19,8 +19,11 @@ namespace dacpacModifier
         [Option('c', "custom", HelpText = "Add Custom Parts to the model xml file. MUST BE VALID XML ELEMENTS")]
         public string CustomPartsInputFile { get; set; }
 
-        [Option('s', "stringreplace", HelpText = "Performs a string replace operation on the model xml. Currently only one replacement allowed. Use ~ to seperate old and new value")]
-        public string stringreplace { get; set; }
+        [Option("StringReplace", HelpText = "Performs a string replace operation on the model xml. Currently only one replacement allowed. Use ~ to seperate old and new value")]
+        public string StringReplace { get; set; }
+
+        [Option("ElementTypeName", HelpText = "This will remove Elements by Type and Name. Use ~ to seperate Type and Name, and ; to split Types and Names")]
+        public string ElementTypeName { get; set; }
 
         [Option('v', "verbose", HelpText = "Print details during execution.")]
         public bool Verbose { get; set; }
