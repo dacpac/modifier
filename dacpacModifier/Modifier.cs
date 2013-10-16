@@ -78,6 +78,10 @@ namespace dacpacModifier
             {
                 Console.WriteLine("Removing Element Type(s) and Name(s): {0}", args.RemoveElementTypeName);
             }
+            if (args.KeepElementTypeName != null)
+            {
+                Console.WriteLine("Keeping Element Type(s) and Name(s): {0}", args.KeepElementTypeName);
+            }
 
 
 
