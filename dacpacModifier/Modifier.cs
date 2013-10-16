@@ -74,9 +74,9 @@ namespace dacpacModifier
             {
                 Console.WriteLine("Adding Custom XML Part(s): {0}", args.CustomPartsInputFile);
             }
-            if (args.ElementTypeName != null)
+            if (args.RemoveElementTypeName != null)
             {
-                Console.WriteLine("Removing Element Type(s) and Name(s): {0}", args.ElementTypeName);
+                Console.WriteLine("Removing Element Type(s) and Name(s): {0}", args.RemoveElementTypeName);
             }
 
 

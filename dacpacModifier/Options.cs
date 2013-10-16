@@ -22,8 +22,11 @@ namespace dacpacModifier
         [Option("StringReplace", HelpText = "Performs a string replace operation on the model xml. Currently only one replacement allowed. Use ~ to seperate old and new value")]
         public string StringReplace { get; set; }
 
-        [Option("ElementTypeName", HelpText = "This will remove Elements by Type and Name. Use ~ to seperate Type and Name, and ; to split Types and Names")]
-        public string ElementTypeName { get; set; }
+        [Option("RemoveElementTypeName", HelpText = "This will REMOVE Elements by Type and Name. Use ~ to seperate Type and Name, and ; to split Types and Names")]
+        public string RemoveElementTypeName { get; set; }
+
+        [Option("KeepElementTypeName", HelpText = "This will KEEP Elements by Type and Name. Use ~ to seperate Type and Name, and ; to split Types and Names")]
+        public string KeepElementTypeName { get; set; }
 
         [Option('v', "verbose", HelpText = "Print details during execution.")]
         public bool Verbose { get; set; }

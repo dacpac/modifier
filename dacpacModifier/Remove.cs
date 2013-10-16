@@ -36,11 +36,26 @@ namespace dacpacModifier
                 XElement checksumElement = (from cs in dacOriginXml.Descendants(xmls + "Checksum")
                                             select cs).FirstOrDefault();
 
+                XElement keepPartsElement = new XElement(xmls + "Model");
+
                 if (checksumElement != null)
                 {
                     if (args.Verbose)
                     {
                         Console.WriteLine("Checksum exists {0}", checksumElement.Value);
+                    }
+                }
+
+                // Keep Elements by type and name if supplied
+                if (args.KeepElementTypeName != null)
+                {
+                    string[] _keepElementTypeNames = args.KeepElementTypeName.Split(';');
+                    foreach (string etn in _keepElementTypeNames)
+                    {
+                        string[] _keepElementTypes = etn.Split('~');
+                        var tempParts = dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                                                   .Where(x => x.Attribute("Type").Value == _keepElementTypes[0] && x.Attribute("Name").Value == _keepElementTypes[1]);
+                        keepPartsElement.Add(tempParts);
                     }
                 }
 
@@ -63,15 +78,14 @@ namespace dacpacModifier
                 }
 
                 // Remove Elements by type and name if supplied
-                if (args.ElementTypeName != null)
+                if (args.RemoveElementTypeName != null)
                 {
-                    string[] _elementTypeNames = args.ElementTypeName.Split(';');
+                    string[] _elementTypeNames = args.RemoveElementTypeName.Split(';');
                     foreach (string etn in _elementTypeNames)
                     {
                         string[] _elementTypes = etn.Split('~');
                         dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
-                               .Where(x => x.Attribute("Type").Value == _elementTypes[0])
-                               .Where(x => x.Attribute("Name").Value == _elementTypes[1])
+                               .Where(x => x.Attribute("Type").Value == _elementTypes[0] && x.Attribute("Name").Value == _elementTypes[1])
                                .Remove();
                     }
                 }
@@ -105,6 +119,14 @@ namespace dacpacModifier
                 XDocument newDacModelXml = XDocument.Parse(stringDacModel);
                 try
                 {
+                    if (args.KeepElementTypeName != null)
+                    {
+                        var keptParts = keepPartsElement.Elements(xmls + "Element");
+                        newDacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                                           .LastOrDefault()
+                                           .AddAfterSelf(keptParts);
+                    }
+
                     newDacModelXml.Save(_stream, SaveOptions.None);
                     // Need to regenerate the checksum as it's been tempered with
                     byte[] byteArray = Checksum.CalculateChecksum(dacModelPart.GetStream());
@@ -186,11 +208,26 @@ namespace dacpacModifier
                 XElement checksumElement = (from cs in dacOriginXml.Descendants(xmls + "Checksum")
                                             select cs).FirstOrDefault();
 
+                XElement keepPartsElement = new XElement(xmls + "Model");
+
                 if (checksumElement != null)
                 {
                     if (args.Verbose)
                     {
                         Console.WriteLine("Checksum exists {0}", checksumElement.Value);
+                    }
+                }
+
+                // Keep Elements by type and name if supplied
+                if (args.KeepElementTypeName != null)
+                {
+                    string[] _keepElementTypeNames = args.KeepElementTypeName.Split(';');
+                    foreach (string etn in _keepElementTypeNames)
+                    {
+                        string[] _keepElementTypes = etn.Split('~');
+                        var tempParts = dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                                                   .Where(x => x.Attribute("Type").Value == _keepElementTypes[0] && x.Attribute("Name").Value == _keepElementTypes[1]);
+                        keepPartsElement.Add(tempParts);
                     }
                 }
 
@@ -213,9 +250,9 @@ namespace dacpacModifier
                 }
 
                 // Remove Elements by type and name if supplied
-                if (args.ElementTypeName != null)
+                if (args.RemoveElementTypeName != null)
                 {
-                    string[] _elementTypeNames = args.ElementTypeName.Split(';');
+                    string[] _elementTypeNames = args.RemoveElementTypeName.Split(';');
                     foreach (string etn in _elementTypeNames)
                     {
                         string[] _elementTypes = etn.Split('~');
@@ -264,6 +301,13 @@ namespace dacpacModifier
 
                 try
                 {
+                    if (args.KeepElementTypeName != null)
+                    {
+                        var keptParts = keepPartsElement.Elements(xmls + "Element");
+                        newDacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                                           .LastOrDefault()
+                                           .AddAfterSelf(keptParts);
+                    }
                     newDacModelXml.Save(_stream, SaveOptions.None);
                     // Need to regenerate the checksum as it's been tempered with
                     byte[] byteArray = Checksum.CalculateChecksum(dacModelPart.GetStream());
