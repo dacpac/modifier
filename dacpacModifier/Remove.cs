@@ -19,9 +19,7 @@ namespace dacpacModifier
         {
             Package dacpac = Package.Open(InputFile.FullName, FileMode.Open);
             try
-            {
-                string[] _elements = args.ElementTypes.Split(';');
-
+            {   
                 Uri originUri = PackUriHelper.CreatePartUri(new Uri(Constants.OriginXmlUri, UriKind.Relative));
                 Uri modelUri = PackUriHelper.CreatePartUri(new Uri(Constants.ModelXmlUri, UriKind.Relative));
 
@@ -59,11 +57,16 @@ namespace dacpacModifier
                     }
                 }
 
-                foreach (string ElementType in _elements)
-                {
-                    dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
-                               .Where(x => x.Attribute("Type").Value == ElementType)
-                               .Remove();
+                if (args.ElementTypes != null)
+                {   
+                    string[] _elements = args.ElementTypes.Split(';');
+
+                    foreach (string ElementType in _elements)
+                    {
+                        dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                                   .Where(x => x.Attribute("Type").Value == ElementType)
+                                   .Remove();
+                    }
                 }
 
                 if (args.PropertyTypes != null)
@@ -192,8 +195,6 @@ namespace dacpacModifier
             Package dacpac = Package.Open(InputFile.FullName, FileMode.Open);
             try
             {
-                string[] _elements = args.ElementTypes.Split(';');
-
                 Uri originUri = PackUriHelper.CreatePartUri(new Uri(Constants.OriginXmlUri, UriKind.Relative));
                 Uri modelUri = PackUriHelper.CreatePartUri(new Uri(Constants.ModelXmlUri, UriKind.Relative));
 
@@ -231,11 +232,16 @@ namespace dacpacModifier
                     }
                 }
 
-                foreach (string ElementType in _elements)
+                if (args.ElementTypes != null)
                 {
-                    dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
-                               .Where(x => x.Attribute("Type").Value == ElementType)
-                               .Remove();
+                    string[] _elements = args.ElementTypes.Split(';');
+
+                    foreach (string ElementType in _elements)
+                    {
+                        dacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element")
+                                   .Where(x => x.Attribute("Type").Value == ElementType)
+                                   .Remove();
+                    }
                 }
 
                 if (args.PropertyTypes != null)
