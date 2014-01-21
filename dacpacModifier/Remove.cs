@@ -19,7 +19,7 @@ namespace dacpacModifier
         {
             Package dacpac = Package.Open(InputFile.FullName, FileMode.Open);
             try
-            {   
+            {
                 Uri originUri = PackUriHelper.CreatePartUri(new Uri(Constants.OriginXmlUri, UriKind.Relative));
                 Uri modelUri = PackUriHelper.CreatePartUri(new Uri(Constants.ModelXmlUri, UriKind.Relative));
 
@@ -58,7 +58,7 @@ namespace dacpacModifier
                 }
 
                 if (args.ElementTypes != null)
-                {   
+                {
                     string[] _elements = args.ElementTypes.Split(';');
 
                     foreach (string ElementType in _elements)
@@ -189,8 +189,7 @@ namespace dacpacModifier
         /// </summary>
         /// <param name="InputFile">The Input dacpac to open and remove elements from</param>
         /// <param name="args">The arguments to consume</param>
-        /// <param name="CustomPartsInputFile">The Custom Parts Input file to import</param>
-        public static void RemoveAddElements(FileInfo InputFile, Options args, FileInfo CustomPartsInputFile)
+        public static void RemoveAddElements(FileInfo InputFile, Options args)
         {
             Package dacpac = Package.Open(InputFile.FullName, FileMode.Open);
             try
@@ -278,32 +277,49 @@ namespace dacpacModifier
 
                 if (args.StringReplace != null)
                 {
-                    string[] arrStr = args.StringReplace.Split('~');
+                    string[] arrStringReplace = args.StringReplace.Split(';');
 
-                    if (args.Verbose)
+                    foreach (string stringToReplace in arrStringReplace)
                     {
-                        Console.WriteLine("Performing string replacement: Replacing {0} with {1}", arrStr[0], arrStr[1]);
-                    }
-                    if (arrStr[1] == "null")
-                    {
-                        stringDacModel = stringDacModel.Replace(arrStr[0], String.Empty);
+                        string[] arrStr = stringToReplace.Split('~');
+                        if (args.Verbose)
+                        {
+                            Console.WriteLine("Performing string replacement: Replacing {0} with {1}", arrStr[0], arrStr[1]);
+                        }
+                        if (arrStr[1] == "null")
+                        {
+                            stringDacModel = stringDacModel.Replace(arrStr[0], String.Empty);
+
+                        }
+                        else
+                        {
+                            stringDacModel = stringDacModel.Replace(arrStr[0], arrStr[1]);
+                        }
 
                     }
-                    else
-                    {
-                        stringDacModel = stringDacModel.Replace(arrStr[0], arrStr[1]);
-                    }
+
+
+
                 }
 
                 XDocument newDacModelXml = XDocument.Parse(stringDacModel);
                 // Add the custom parts
 
-                XElement customPartsXml = XElement.Load(XmlReader.Create(args.CustomPartsInputFile));
-                var customParts = customPartsXml.Descendants(xmls + "Model").Elements(xmls + "Element");
+                if (args.CustomPartsInputFile != null)
+                {
+                    string[] _parts = args.CustomPartsInputFile.Split(';').Distinct().ToArray();
 
-                var pointer = newDacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element").Last();
+                    foreach (string custom_part in _parts)
+                    {
+                        XElement customPartsXml = XElement.Load(XmlReader.Create(custom_part));
+                        var customParts = customPartsXml.Descendants(xmls + "Model").Elements(xmls + "Element");
 
-                pointer.Parent.Add(customParts);
+                        var pointer = newDacModelXml.Root.Descendants(xmls + "Model").Elements(xmls + "Element").Last();
+
+                        pointer.Parent.Add(customParts);
+                    }
+                }
+
 
                 try
                 {

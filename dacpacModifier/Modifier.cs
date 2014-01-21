@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Packaging;
 using System.Text;
+using System.Linq;
 
 namespace dacpacModifier
 {
@@ -26,25 +27,30 @@ namespace dacpacModifier
                 throw new FileNotFoundException(args.InputFile);
             }
             // Check the file is a valid dacpac
-            if(!Checks.IsDacPac(fi, args))
+            if (!Checks.IsDacPac(fi, args))
             {
                 throw new FileFormatException(Constants.ErrorNotAValidDacpac);
             }
-            
+
             // Import custom parts to model xml
-            if (args.CustomPartsInputFile != null) 
+            if (args.CustomPartsInputFile != null)
             {
-                FileInfo cp = new FileInfo(args.CustomPartsInputFile);
-                if (!cp.Exists)
+                string[] _partsFile = args.CustomPartsInputFile.Split(';').Distinct().ToArray();
+
+                foreach (string part_file in _partsFile)
                 {
-                    throw new FileNotFoundException(args.CustomPartsInputFile);
+                    FileInfo cp = new FileInfo(part_file);
+                    if (!cp.Exists)
+                    {
+                        throw new FileNotFoundException(part_file);
+                    }
                 }
                 // Write to console if verbose
                 if (args.Verbose)
                 {
                     OutputToConsole(args);
                 }
-                Remove.RemoveAddElements(fi, args, cp);
+                Remove.RemoveAddElements(fi, args);
             }
             else
             {
@@ -54,7 +60,7 @@ namespace dacpacModifier
                 }
                 Remove.RemoveElements(fi, args);
             }
-            
+
 
 
         }
